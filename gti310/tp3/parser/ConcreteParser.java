@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class ConcreteParser<E> implements Parser<E>{
 
 	private static Scanner s;
-	private Vertex[] sommets;
+	private Sommet[] sommets;
 	private String nbrSommets;
 	private String sommetDepart;
 	
@@ -36,15 +36,15 @@ public class ConcreteParser<E> implements Parser<E>{
 
 			System.out.println("nbr sommet :"+nbrSommets+" sommet de depart :"+sommetDepart);
 			
-			sommets = new Vertex[Integer.parseInt(nbrSommets)];
+			sommets = new Sommet[Integer.parseInt(nbrSommets)];
 			for (int i = 0; i < sommets.length; i++) {
-				sommets[i] = new Vertex("" + (i+1));
+				sommets[i] = new Sommet("" + (i+1));
 			}
 
 
 			String tmp = "";
 
-			ArrayList<Edge> edges = new ArrayList<Edge>();
+			ArrayList<Noeud> edges = new ArrayList<Noeud>();
 			String lastSource = null;
 			while(s.hasNext()){
 
@@ -56,14 +56,14 @@ public class ConcreteParser<E> implements Parser<E>{
 				String poid = s.next();
 		
 				if (!source.equals(lastSource) && lastSource != null) {
-					sommets[Integer.parseInt(lastSource)-1].adjacencies = edges.toArray(new Edge[edges.size()]);
-					edges = new ArrayList<Edge>();
+					sommets[Integer.parseInt(lastSource)-1].adjacencies = edges.toArray(new Noeud[edges.size()]);
+					edges = new ArrayList<Noeud>();
 				}
 
-				edges.add(new Edge(sommets[Integer.parseInt(destination)-1],Integer.parseInt(poid)));
+				edges.add(new Noeud(sommets[Integer.parseInt(destination)-1],Integer.parseInt(poid)));
 				lastSource = source;
 			}
-			sommets[Integer.parseInt(lastSource)-1].adjacencies = edges.toArray(new Edge[edges.size()]);
+			sommets[Integer.parseInt(lastSource)-1].adjacencies = edges.toArray(new Noeud[edges.size()]);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -85,13 +85,13 @@ public class ConcreteParser<E> implements Parser<E>{
 	}
 
 
-	public Vertex getTabDepart(){
+	public Sommet getTabDepart(){
 		return sommets[Integer.parseInt(sommetDepart)-1];
 		
 	}
 
 
-	public Vertex[] getSommets(){
+	public Sommet[] getSommets(){
 		return sommets;
 	}
 	
@@ -99,10 +99,10 @@ public class ConcreteParser<E> implements Parser<E>{
 	// only for test
 	public void tooString(ConcreteSolver solver){
 		
-		for (Vertex v : sommets)
+		for (Sommet v : sommets)
 		{
 			System.out.println("Distance to " + v + ": " + v.minDistance);
-			List<Vertex> path = solver.getShortestPathTo(v);
+			List<Sommet> path = solver.getShortestPathTo(v);
 			System.out.println("Path: " + path);
 		}
 		

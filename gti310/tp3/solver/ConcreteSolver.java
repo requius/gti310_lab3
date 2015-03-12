@@ -1,17 +1,13 @@
 package gti310.tp3.solver;
 
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import gti310.tp3.parser.Vertex;
+import gti310.tp3.parser.Sommet;
 
-public class ConcreteSolver<T, E> implements Solver<E, T>{
-
-
+public class ConcreteSolver<T, E> implements Solver<E, T> {
 
 	@Override
 	public T solve(E input) {
@@ -19,52 +15,38 @@ public class ConcreteSolver<T, E> implements Solver<E, T>{
 		return null;
 	}
 
-
-
-	public void solve(Vertex source){
+	public void solve(Sommet source) {
 
 		source.minDistance = 0.;
-		PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
-		vertexQueue.add(source);
+		PriorityQueue<Sommet> fileSommet = new PriorityQueue<Sommet>();
+		fileSommet.add(source);
 
-		while (!vertexQueue.isEmpty()) {
-			Vertex u = vertexQueue.poll();
+		while (!fileSommet.isEmpty()) {
+			Sommet u = fileSommet.poll();
 
 			// Visit each edge exiting u
-			for (gti310.tp3.parser.Edge e : u.adjacencies)
-			{
-				Vertex v = e.target;
-				double weight = e.weight;
-				double distanceThroughU = u.minDistance + weight;
+			for (gti310.tp3.parser.Noeud e : u.adjacencies) {
+				Sommet v = e.cible;
+				double poids = e.poids;
+				double distanceThroughU = u.minDistance + poids;
 				if (distanceThroughU < v.minDistance) {
-					vertexQueue.remove(v);
+					fileSommet.remove(v);
 
-					v.minDistance = distanceThroughU ;
+					v.minDistance = distanceThroughU;
 					v.previous = u;
-					vertexQueue.add(v);
+					fileSommet.add(v);
 				}
 			}
 		}
 	}
 
-	public static List<Vertex> getShortestPathTo(Vertex target)
-	{
-		List<Vertex> path = new ArrayList<Vertex>();
-		for (Vertex vertex = target; vertex != null; vertex = vertex.previous)
-			path.add(vertex);
+	public static List<Sommet> getShortestPathTo(Sommet target) {
+		List<Sommet> path = new ArrayList<Sommet>();
+		for (Sommet sommet = target; sommet != null; sommet = sommet.previous)
+			path.add(sommet);
 
 		Collections.reverse(path);
 		return path;
 	}
 
-
-
-	
-	
 }
-
-
-
-
-
-
