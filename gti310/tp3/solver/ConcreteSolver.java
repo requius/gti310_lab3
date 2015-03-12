@@ -17,7 +17,7 @@ public class ConcreteSolver<T, E> implements Solver<E, T> {
 
 	public void solve(Sommet source) {
 
-		source.minDistance = 0.;
+		source.distanceMin = 0.;
 		PriorityQueue<Sommet> fileSommet = new PriorityQueue<Sommet>();
 		fileSommet.add(source);
 
@@ -25,28 +25,28 @@ public class ConcreteSolver<T, E> implements Solver<E, T> {
 			Sommet u = fileSommet.poll();
 
 			// Visit each edge exiting u
-			for (gti310.tp3.parser.Noeud e : u.adjacencies) {
+			for (gti310.tp3.parser.Noeud e : u.noeudAdjacents) {
 				Sommet v = e.cible;
 				double poids = e.poids;
-				double distanceThroughU = u.minDistance + poids;
-				if (distanceThroughU < v.minDistance) {
+				double distanceVersU = u.distanceMin + poids;
+				if (distanceVersU < v.distanceMin) {
 					fileSommet.remove(v);
 
-					v.minDistance = distanceThroughU;
-					v.previous = u;
+					v.distanceMin = distanceVersU;
+					v.precedent = u;
 					fileSommet.add(v);
 				}
 			}
 		}
 	}
 
-	public static List<Sommet> getShortestPathTo(Sommet target) {
-		List<Sommet> path = new ArrayList<Sommet>();
-		for (Sommet sommet = target; sommet != null; sommet = sommet.previous)
-			path.add(sommet);
+	public static List<Sommet> getCheminPlusCourtVers(Sommet cible) {
+		List<Sommet> chemin = new ArrayList<Sommet>();
+		for (Sommet sommet = cible; sommet != null; sommet = sommet.precedent)
+			chemin.add(sommet);
 
-		Collections.reverse(path);
-		return path;
+		Collections.reverse(chemin);
+		return chemin;
 	}
 
 }

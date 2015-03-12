@@ -17,9 +17,9 @@ public class ConcreteWriter<T> implements Writer<T> {
 	public void write(Sommet[] sommets, ConcreteSolver solver) {
 
 		for (Sommet v : sommets) {
-			System.out.println("Distance to " + v + ": " + v.minDistance);
-			List<Sommet> path = solver.getShortestPathTo(v);
-			System.out.println("Path: " + path);
+			System.out.println("Distance vers " + v + ": " + v.distanceMin);
+			List<Sommet> chemin = solver.getCheminPlusCourtVers(v);
+			System.out.println("Chemin: " + chemin);
 		}
 
 	}
