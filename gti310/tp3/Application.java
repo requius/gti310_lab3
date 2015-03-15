@@ -29,13 +29,13 @@ public class Application {
 		System.out.println("Unreal Networks Solver !");
 
 		ConcreteParser<E> concreteParser = new ConcreteParser<E>();
-		concreteParser.parse("Vendeur.txt");
+		concreteParser.parse(args[0]);
 
 		ConcreteSolver<T, E> solver = new ConcreteSolver<T, E>();
 		solver.solve(concreteParser.getTabDepart());
 
 		ConcreteWriter writer = new ConcreteWriter<T>();
-		writer.write(concreteParser.getSommets(), solver);
+		writer.write(args[1], concreteParser.getSommetDep(), concreteParser.getSommets(), solver);
 
 	}
 
